@@ -9,10 +9,12 @@ import {
   Alert,
 } from "react-native";
 import { getToken, setToken } from "../utils/tokenHelper";
-import { COLORS } from "../utils/colors";
+import { useThemeColors } from "../utils/colors";
 import { apiClient } from "../utils/api";
 
 export default function SignInScreen({ navigation }) {
+  const colors = useThemeColors();
+  const styles = createStyles(colors);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,6 +76,7 @@ export default function SignInScreen({ navigation }) {
           editable={!loading}
           keyboardType="email-address"
           autoCapitalize="none"
+          placeholderTextColor={colors.textMuted}
         />
       </View>
 
@@ -87,6 +90,7 @@ export default function SignInScreen({ navigation }) {
           onChangeText={setPassword}
           editable={!loading}
           autoCapitalize="none"
+          placeholderTextColor={colors.textMuted}
         />
       </View>
 
@@ -96,7 +100,7 @@ export default function SignInScreen({ navigation }) {
         disabled={loading}
       >
         {loading ? (
-          <ActivityIndicator color="#fff" />
+          <ActivityIndicator color={colors.white} />
         ) : (
           <Text style={styles.buttonText}>Sign In</Text>
         )}
@@ -105,56 +109,57 @@ export default function SignInScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: COLORS.primary,
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 18,
-    color: COLORS.textSecondary,
-    marginBottom: 32,
-  },
-  inputRow: {
-    width: "80%",
-    marginBottom: 20,
-  },
-  label: {
-    marginBottom: 5,
-    fontWeight: "600",
-    color: COLORS.textSecondary,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: COLORS.surface,
-    color: COLORS.textPrimary,
-  },
-  button: {
-    width: "80%",
-    padding: 14,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: COLORS.primary,
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    color: COLORS.white,
-    fontWeight: "600",
-    fontSize: 16,
-  },
-});
+const createStyles = (colors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    title: {
+      fontSize: 30,
+      fontWeight: "bold",
+      color: colors.primary,
+      marginBottom: 4,
+    },
+    subtitle: {
+      fontSize: 18,
+      color: colors.textSecondary,
+      marginBottom: 32,
+    },
+    inputRow: {
+      width: "80%",
+      marginBottom: 20,
+    },
+    label: {
+      marginBottom: 5,
+      fontWeight: "600",
+      color: colors.textSecondary,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      padding: 10,
+      borderRadius: 5,
+      backgroundColor: colors.surface,
+      color: colors.textPrimary,
+    },
+    button: {
+      width: "80%",
+      padding: 14,
+      borderRadius: 5,
+      marginTop: 10,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.primary,
+    },
+    buttonDisabled: {
+      opacity: 0.6,
+    },
+    buttonText: {
+      color: colors.white,
+      fontWeight: "600",
+      fontSize: 16,
+    },
+  });

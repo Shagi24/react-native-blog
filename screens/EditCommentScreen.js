@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet } from "react-native";
-import { COLORS } from "../utils/colors";
+import { useThemeColors } from "../utils/colors";
 
 export default function EditCommentScreen() {
+  const colors = useThemeColors();
+  const styles = createStyles(colors);
+
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Edit Comment</Text>
@@ -10,23 +13,24 @@ export default function EditCommentScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 24,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: COLORS.primary,
-    marginBottom: 12,
-  },
-  body: {
-    fontSize: 16,
-    color: COLORS.textSecondary,
-    textAlign: "center",
-  },
-});
+const createStyles = (colors) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background,
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 24,
+    },
+    heading: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: colors.primary,
+      marginBottom: 12,
+    },
+    body: {
+      fontSize: 16,
+      color: colors.textSecondary,
+      textAlign: "center",
+    },
+  });

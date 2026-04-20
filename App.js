@@ -2,32 +2,42 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
-import { House, PlusCircle, User } from "lucide-react-native";
+import { House, PlusCircle, User, Tv } from "lucide-react-native";
 
 import SignInScreen from "./screens/SignInScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import AddPostScreen from "./screens/AddPostScreen";
+import ReelsScreen from "./screens/ReelsScreen";
 import EditPostScreen from "./screens/EditPostScreen";
 import AddCommentScreen from "./screens/AddCommentScreen";
 import EditCommentScreen from "./screens/EditCommentScreen";
-import { COLORS } from "./utils/colors";
+import {
+  navigationThemeDark,
+  navigationThemeLight,
+  ThemeProvider,
+  useTheme,
+  useThemeColors,
+} from "./utils/colors";
+import { PostsProvider } from "./utils/PostsContext";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function MainTabs() {
+  const colors = useThemeColors();
+
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: COLORS.white,
-        tabBarActiveBackgroundColor: COLORS.primary,
-        tabBarInactiveTintColor: COLORS.textMuted,
-        headerStyle: { backgroundColor: COLORS.primary },
-        headerTintColor: COLORS.white,
+        tabBarActiveTintColor: colors.white,
+        tabBarActiveBackgroundColor: colors.primary,
+        tabBarInactiveTintColor: colors.textMuted,
+        headerStyle: { backgroundColor: colors.primary },
+        headerTintColor: colors.white,
         tabBarStyle: {
-          backgroundColor: COLORS.surface,
-          borderTopColor: COLORS.border,
+          backgroundColor: colors.surface,
+          borderTopColor: colors.border,
         },
       }}
     >
@@ -49,6 +59,14 @@ function MainTabs() {
         }}
       />
       <Tab.Screen
+        name="Reels"
+        component={ReelsScreen}
+        options={{
+          tabBarIcon: ({ size, color }) => <Tv size={size} color={color} />,
+          title: "Reels",
+        }}
+      />
+      <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
@@ -59,14 +77,18 @@ function MainTabs() {
   );
 }
 
-export default function App() {
+function AppContent() {
+  const { scheme } = useTheme();
+  const theme = scheme === "dark" ? navigationThemeDark : navigationThemeLight;
+  const statusBarStyle = scheme === "dark" ? "light" : "dark";
+
   return (
-    <NavigationContainer>
-      <StatusBar style="light" />
+    <NavigationContainer theme={theme}>
+      <StatusBar style={statusBarStyle} />
       <Stack.Navigator
         screenOptions={{
-          headerStyle: { backgroundColor: COLORS.primary },
-          headerTintColor: COLORS.white,
+          headerStyle: { backgroundColor: theme.colors.primary },
+          headerTintColor: "#ffffff",
         }}
       >
         <Stack.Screen
@@ -101,5 +123,15 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+  );
+}
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <PostsProvider>
+        <AppContent />
+      </PostsProvider>
+    </ThemeProvider>
   );
 }
